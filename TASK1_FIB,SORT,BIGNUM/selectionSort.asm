@@ -96,17 +96,18 @@ _stringToNum: ; Numlen: ecx, String: ebx
         mov dl, [ebx + esi]
         sub edx, 0x30
         add eax, edx
-        inc esi
+    inc esi
     loop L0OP
+
     mov esi, [flag]
     cmp esi, 0x1
     jne c0ntinu3
-    mov ecx, 0xffffffff
-    sub ecx, eax
-    mov eax, ecx
+        mov ecx, 0xffffffff
+        sub ecx, eax
+        mov eax, ecx
     c0ntinu3:
     xor esi, esi
-    ret
+ret
 
 _numToString: ;ARGS(int(EAX))
     mov ecx, 0
@@ -146,7 +147,7 @@ _numToString: ;ARGS(int(EAX))
         mov [num2 + ebp], edx
         inc ebp
     loop L00P
-    ret
+ret
 
 _getArray: 
 
