@@ -7,7 +7,9 @@
 ### String to number
 
 - Vấn đề đầu tiên cần giải quyết với các bài toán yêu cầu input là xử lý chuỗi thành số. khi nhập đầu vào với syscall, thứ được truyền vào là chuỗi kí tự.
+
   ![Alt text](IMG/image.png)
+
 - Ta với các kí tự digit '0'-'9' nằm trong khoảng 0x30-0x39, ta convert từ chuỗi số sang số nguyên bằng cách tách từng phần tử của chuỗi, trừ đi `0x30` và nhân dần với `0xa` trước bước lặp để thêm vào digit tiếp theo.
 
 ```asm
