@@ -38,11 +38,11 @@ print(out)
 
 - Sau khi cài đặt và thấy chương trình hoạt động ổn, một vấn đề nảy sinh. RC4 là loại mã hóa đối xứng, Tức là `input` được encrypt có thể decrypt bằng chính thuật toán này. Ở chương trình trên, với input là `987654321` ta có encryptedString là `qçÃ>°ß²¶¤` và ngược lại.
 
-  ![Alt text](image.png)
+  ![Alt text](IMG/image.png)
 
 - Thử chức năng này với chương trình asm. Vấn đề nảy sinh khi input là chuỗi `qçÃ>°ß²¶¤`. Mặc dù đều là các kí tự nhỏ hơn `0xff` khi đổi sang dạng hexa, việc nhập vào của các kí tự không có trong bàn phím lại xuất hiện giá trị không chính xác.
 
-  ![Alt text](image-1.png)
+  ![Alt text](IMG/image-1.png)
 
 - giá trị của kí tự `ç` ở dạng hexa là `0xe7`, nhưng input đã có sự khác biệt. Để chứng minh chương trình được cài đặt là đúng, mình bỏ đi phần nhập input và set các giá trị đầu của chuỗi `data` thành `0x71, 0xe7, 0xc3, 0x3e, 0xb0, 0xdf, 0xb2, 0xb6, 0xa4` với key giữ nguyên là `4444`, ta vẫn thu được output là `987654321` như ban đầu.
 
