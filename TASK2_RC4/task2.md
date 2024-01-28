@@ -40,6 +40,10 @@ print(out)
 
   ![Alt text](IMG/image.png)
 
+- Chạy chương trình asm
+
+  ![Alt text](IMG/image-2.png)
+
 - Thử chức năng này với chương trình asm. Vấn đề nảy sinh khi input là chuỗi `qçÃ>°ß²¶¤`. Mặc dù đều là các kí tự nhỏ hơn `0xff` khi đổi sang dạng hexa, việc nhập vào của các kí tự không có trong bàn phím lại xuất hiện giá trị không chính xác.
 
   ![Alt text](IMG/image-1.png)
