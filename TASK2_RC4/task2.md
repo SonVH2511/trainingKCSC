@@ -49,6 +49,7 @@ print(out)
   ![Alt text](IMG/image-1.png)
 
 - giá trị của kí tự `ç` ở dạng hexa là `0xe7`, nhưng input đã có sự khác biệt. Để chứng minh chương trình được cài đặt là đúng, mình bỏ đi phần nhập input và set các giá trị đầu của chuỗi `data` thành `0x71, 0xe7, 0xc3, 0x3e, 0xb0, 0xdf, 0xb2, 0xb6, 0xa4` với key giữ nguyên là `4444`, ta vẫn thu được output là `987654321` như ban đầu.
+  ![Alt text](IMG/image-3.png)
 
 ### Tổng kết
 
