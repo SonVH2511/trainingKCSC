@@ -45,7 +45,7 @@
 
 - Đoạn này convert ra data rác :v tìm hiểu một hồi thì biết giá trị dạng `bin` thường được lưu trữ ngược lại :c. `reverse()` string và convert rồi `reverse()` phát nữa là được.
 
-![alt text](IMG/HiddenTreasure/image-7.png)
+  ![alt text](IMG/HiddenTreasure/image-7.png)
 
 - convert Source
 
