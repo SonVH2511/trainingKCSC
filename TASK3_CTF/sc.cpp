@@ -118,7 +118,8 @@ void solve()
                                             v21 = v19 + v20++;
                                             v22 = v29[v15++];
                                             // cout << int(v22);
-                                            cout << int(v26[2 * v21 + v21]) << endl;
+                                            if (int(v26[2 * v21 + v21]) == 0 || int(v26[2 * v21 + v21]) == 1)
+                                                cout << int(v26[2 * v21 + v21]);
                                             // v26[2 * v21 + v21] = v22;
                                             v19 = v31;
                                             v16 = v25;
@@ -151,9 +152,6 @@ void solve()
 }
 int main()
 {
-    ios_base::sync_with_stdio(false);
-    cin.tie(0);
-    cout.tie(0);
 
     freopen("inside-the-mind-of-a-hacker-memory.bmp", "rb", stdin);
     freopen("output.txt", "w", stdout);
