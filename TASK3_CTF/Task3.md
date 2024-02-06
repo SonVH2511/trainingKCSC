@@ -120,6 +120,8 @@ flag: flag{easy_baby_challenge}
 
 ## HiddenTreasure
 
+- Mình giải được bài HiddenTreasure này là nhờ một vài gợi ý từ WU https://hackmd.io/@S0L/REVnMISC_for_FPT#Writeup-RE--MISC.
+
 ### Lời giải
 
 - Ở Chall này mình thu được kha khá kiến thức về việc thay đổi mã giả thành chương trình `C++` có thể thực thi. Tất nhiên mình có một vài khó khăn khi xử lí Chall này như sau:
@@ -353,8 +355,6 @@ int main()
     cout << revFlag;
 }
 ```
-
-- Mình giải được bài này là nhờ một vài gợi ý từ WU https://hackmd.io/@S0L/REVnMISC_for_FPT#Writeup-RE--MISC.
 
 ## Mong WRITEUP này giúp ích cho các bạn!
 
