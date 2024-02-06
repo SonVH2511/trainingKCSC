@@ -47,6 +47,10 @@
 
   ![alt text](IMG/HiddenTreasure/image-7.png)
 
+```
+flag: flag{dont_forget_the_treasure}
+```
+
 - convert Source
 
 ```C++
@@ -232,11 +236,6 @@ int main()
 }
 ```
 
-```
-flag: flag{dont_forget_the_treasure}
-```
-
--
 - Mình giải được bài này là nhờ một vài gợi ý từ WU https://hackmd.io/@S0L/REVnMISC_for_FPT#Writeup-RE--MISC.
 
 ## Mong WRITEUP này giúp ích cho các bạn!
