@@ -31,7 +31,7 @@
 
   ![alt text](IMG/HiddenTreasure/image-3.png)
 
-- với v21 phụ thuộc vào v16 = const. Ta thử xem xét v22, v22 = v29 = v9. Ta thấy một đoạn biến đổi giá trị của v9[8*256]. Đoạn này mình bắt đầu thấy ngờ ngợ :v, mảng cấp phát bởi malloc() được sinh ngẫu nhiên thì biến đổi được gì nhỉ :D.
+- với v21 phụ thuộc vào v16 = const. Ta thử xem xét v22, v22 = v29 = v9. Ta thấy một đoạn biến đổi giá trị của v9[8*256]. Đoạn này mình bắt đầu thấy ngờ ngợ :v, mảng cấp phát bởi `malloc()` được sinh ngẫu nhiên thì biến đổi được gì nhỉ :D.
 
   ![alt text](IMG/HiddenTreasure/image-4.png)
 
@@ -43,7 +43,7 @@
 
   ![alt text](IMG/HiddenTreasure/image-6.png)
 
-- đoạn này convert ra data rác :v tìm hiểu một hồi thì biết giá trị dạng `bin` thường được lưu trữ ngược lại :c. reverse() string và convert rồi reverse() phát nữa là được.
+- Đoạn này convert ra data rác :v tìm hiểu một hồi thì biết giá trị dạng `bin` thường được lưu trữ ngược lại :c. `reverse()` string và convert rồi `reverse()` phát nữa là được.
 
 ![alt text](IMG/HiddenTreasure/image-7.png)
 
