@@ -31,7 +31,7 @@
 
   ![alt text](IMG/HiddenTreasure/image-3.png)
 
-- với v21 phụ thuộc vào v16 = const. Ta thử xem xét v22, v22 = v29 = v9. Ta thấy một đoạn biến đổi giá trị của v9[8*256]. Đoạn này mình bắt đầu thấy ngờ ngợ :v, mảng cấp phát bởi `malloc()` được sinh ngẫu nhiên thì biến đổi được gì nhỉ :D.
+- với v21 = const vì phụ thuộc vào v16 = const, cũng là biến duy nhất thay ảnh hưởng tới v16. Ta thử xem xét v22, v22 = v29 = v9. Ta thấy một đoạn biến đổi giá trị của v9[8*256]. Đoạn này mình bắt đầu thấy ngờ ngợ :v, mảng cấp phát bởi `malloc()` được sinh ngẫu nhiên thì biến đổi được gì nhỉ :D.
 
   ![alt text](IMG/HiddenTreasure/image-4.png)
 
