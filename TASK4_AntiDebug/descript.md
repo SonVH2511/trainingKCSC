@@ -165,7 +165,7 @@ bool Check()
 
 1. RDPMC/RDTSC
 
-- là hàm sử dụng để tính khoảng thời gian bắt đầu gọi hàm cho tới lần gọi hàm tiếp theo. Chương trình bên dưới mình đặt hàm `sleep()` nhằm mô phỏng việc step từng dòng lệnh khi `debug` để kiểm tra độ chênh lệch sau 2 lần gọi `__rdtsc()`. Với kết quả chênh lệch khá cao so với, ta hoàn toàn có thể đặt lệnh kiểm tra độ lớn = t2-t1 ở sau đó để anti-debug.
+- là hàm sử dụng để tính khoảng thời gian bắt đầu gọi hàm cho tới lần gọi hàm tiếp theo. Chương trình bên dưới mình đặt hàm `sleep()` nhằm mô phỏng việc step từng dòng lệnh khi `debug` để kiểm tra độ chênh lệch sau 2 lần gọi `__rdtsc()`. Với kết quả chênh lệch khá cao so với kì vọng, ta hoàn toàn có thể đặt lệnh kiểm tra độ lớn = t2-t1 ở sau đó để anti-debug.
 
   ![alt text](IMG/image-10.png)
 
