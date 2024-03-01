@@ -42,7 +42,7 @@ print(len(flag))
 
 - Sử dụng flag thu được quăng vào debug xem đoạn nào bắt buộc phải bypass :v. Ta thấy được đoạn này cần patch vì chương trình không nhảy vào đoạn cipher khi debug.
 
-![alt text](IMG/anti1/image-4.png)
+  ![alt text](IMG/anti1/image-4.png)
 
 - Thông báo flag chuẩn.
 
@@ -54,35 +54,35 @@ print(len(flag))
 
 - Lệnh kiểm tra của chương trình vô cùng đơn giản, với `key` là `v22` không đổi, `*v10` -> `*v24`. `v24` được sinh ra trong các đoạn lệnh trên. Debug tới vị trí này, mình lấy ra `v24` và `v22` ra để viết script gen flag nhưng ra chuỗi rác, vậy khả năng cao vấn đề nằm ở quá trình sinh ra cipher(`v24`) bởi `v22` là const.
 
-  ![alt text](image-2.png)
+  ![alt text](IMG/anti2/image-2.png)
 
 - Mình thấy được trong chương trình có 3 hàm truyền vào `v24`, Từ đó ta sẽ quét qua các đoạn tác động tới `v24`.
 
-  ![alt text](image-5.png)
+  ![alt text](IMG/anti2/image-5.png)
 
 - Sử dụng `IDA` để tiến hành debug, mình thấy được 2 đoạn xử lý khá đáng ngờ. điều kiện `if(v2)` rất đáng chú ý, bởi `v2` là `const`. Việc này khiến ta bắt buộc phải nhảy vào đoạn xử lý trong đó, đồng thời đoạn xử lý này có dòng lệnh `sub_565388A26610((unsigned int *)v24);` tác động tới `v24`.
 
-  ![alt text](image.png)
+  ![alt text](IMG/anti2/image.png)
 
 - Mình xem xét hàm `sub_565388A26610()` và thấy trong đó có một hàm sử dụng bộ đếm thời gian - thứ thường xuất hiện trong các chương trình có áp dụng `anti-debug`. Mình quyết định bypass để không nhảy vào đoạn xử lý này.
 
-  ![alt text](image-4.png)
+  ![alt text](IMG/anti2/image-4.png)
 
 - Tiếp theo là hàm `sub_5642338CFE70((__int64)v24, v3);` với `v24` là đối tượng cần xem xét và v3 được sinh ra từ `v24`(nếu nhảy vào đoạn xử lí trên, nếu không `v3` là const). Tuy nhiên hàm này không có vấn đề gì, bởi một là nó luôn được thực thi khi chạy chương trình, hai là trong hàm không có các đoạn xử lý toán học thông thường. Mình sẽ bỏ qua hàm này.
 
-  ![alt text](image-6.png)
+  ![alt text](IMG/anti2/image-6.png)
 
 - cuối cùng là `sub_5642338D0730((const __m128i *)v26, 6u, v24);` nằm trong đoạn check với `key`. `sub_5642338D0730()` được gọi ra khi vòng lặp chạy lần đầu, mình suy luận rằng nó là hàm sinh ra `v24` từ dữ liệu trước đó. Và trong hàm này cũng có những đoạn trả về `v24` với `argv` khác khiến `v24` bị thay đổi.
 
-  ![alt text](image-7.png)
+  ![alt text](IMG/anti2/image-7.png)
 
 - Khi nhảy tới đây, mình thấy rằng các câu lệnh kiểm tra bên trên luôn check giá trị tại `dword_56423391D178` là `const`, điều này thể hiện `dword_56423391D178` đã bị thay đổi ở đâu đó để dùng vào việc detect debugger. Vì thế mình sẽ bypass toàn bộ các dòng lệnh kiểm tra đó để nhảy xuống đoạn chương trình sinh ra `v24` ngay dưới.
 
-  ![alt text](image-8.png)
+  ![alt text](IMG/anti2/image-8.png)
 
 - Cuối cùng thu được `v24`, viết script sinh ra flag. Nếu còn gì cần lưu ý thì đó là kiểu dữ liệu của bước nhảy `v8` là 64bit nên mỗi lần nhảy 4 kí tự, và `v10`->`v24` được ép về `__int8` nên ta cần nhảy 4 kí tự một hoặc and nó với `0xff`. Điều này trong quá trình chạy vòng lặp có thể dễ dàng nhận ra thôi^^.
 
-  ![alt text](image-9.png)
+  ![alt text](IMG/anti2/image-9.png)
 
 ```python
 v24 = [0xE8, 0x49, 0x12, 0x6E, 0x4E, 0x47, 0xD8, 0x7A, 0x1B, 0x2E,
