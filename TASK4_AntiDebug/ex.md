@@ -68,7 +68,7 @@ print(len(flag))
 
   ![alt text](IMG/anti2/image-4.png)
 
-- Tiếp theo là hàm `sub_5642338CFE70((__int64)v24, v3);` với `v24` là đối tượng cần xem xét và v3 được sinh ra từ `v24`(nếu nhảy vào đoạn xử lí trên, nếu không `v3` là const). Tuy nhiên hàm này không có vấn đề gì, bởi một là nó luôn được thực thi khi chạy chương trình, hai là trong hàm không có các đoạn xử lý toán học thông thường. Mình sẽ bỏ qua hàm này.
+- Tiếp theo là hàm `sub_5642338CFE70((__int64)v24, v3);` với `v24` là đối tượng cần xem xét và v3 được sinh ra từ `v24`(nếu nhảy vào đoạn xử lí trên, nếu không `v3` là const). Tuy nhiên hàm này không có vấn đề gì, bởi một là nó luôn được thực thi khi chạy chương trình, hai là trong hàm chỉ có các đoạn xử lý toán học thông thường. Mình sẽ không tác động tới hàm này.
 
   ![alt text](IMG/anti2/image-6.png)
 
