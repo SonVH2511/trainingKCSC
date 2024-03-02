@@ -136,7 +136,297 @@ print(flag)
 
 ### anti3
 
-- cuming soon~~
+- Với sự hỗ trợ toàn diện từ anh Dũng, mình hoàn thành chall này khi xử lý các thông tin được gợi ý^^
+
+- Độ khó của bài này đã được nâng cao, không thể `patch` thiếu trách nhiệm như bài 2 nữa, khi bộ switch/case bắt buộc phải chạy vào để thực hiện biến đổi `cipher`. Điểm khác biệt của các `case` là tham số đầu tiên của hàm `solve(,,)`- biểu thị cho việc detect debugger trong nội dung từng `case`. Hai tham số còn lại của hàm đều là const nên ta chỉ cần nhặt ra để viết `script`.
+
+  ![alt text](IMG/anti3/image.png)
+
+- Cũng may rằng ngoài việc detect debugger kĩ và dày hơn 2 bài trên thì việc gen ra flag lại không khác mấy, mấu chốt vẫn nằm ở phép `xor`. Trong chương trình, input sẽ được check từng kí tự bằng cách so sánh với input. `v2` mang kdl `bool` là kết quả của phép so sánh giữa `cipher[i]` và kết quả của phép toán `input[shuffledIndex[v3]]^solve(0/1,const1,const2)` được đem đi để kiểm tra và tiếp tục vòng lặp 38 lần. với `cipher`, `shuffledIndex` và 2 đối số sau là `const`, mình vạch được ra mục tiêu trong bài này là detect ra tham số đầu tiên của `solve()` rút ra sau mỗi lần bypass công đoạn `antidebug` trong từng `case`.
+
+  ![alt text](IMG/anti3/image-1.png)
+
+- Trước tiên phải kể đến `TlsCallback`, mình khá ấn tượng về hàm này khi lần đầu đọc WU bài `two_faces`-chall đầu tiên mình gặp có xuất hiện `antidebug`. Nên biết rõ rằng chall nào có antidebug, đây sẽ là hàm mình search đầu tiên^^. Thứ được gọi ra ở đây là `ZwQueryInformationProcess`, hàm này thực hiện kiểm tra thông qua `ProcessDebugPort`, nếu chương trình bị debug, sẽ trả về `0xffffffff`
+
+- Khi check debug thành công, chương trình sẽ thêm một lệnh vào chương trình, thực hiện thay đổi giá trị của mảng `data` thứ được dùng để tạo ra `const_data1` -> ảnh hưởng tới `solve()`. Giải quyết vấn đề bằng cách `patch` để bypass đoạn kiểm tra.
+
+  ![alt text](IMG/anti3/image-2.png)
+
+- Các đoạn trung gian dẫn đến hàm check Input không có gì đáng nói nên bỏ qua, tới phân tích hàm kiểm tra Input. Mình có viết đoạn chương trình rút gọn nội dung hàm này như sau:
+
+```python
+  for(i:0->38)
+  {
+    if Case[i] == 1:
+      tmp = solve(checkdebugger1(),const_data1,const_data2[i])
+    else if Case[i] == 2:
+      tmp = solve(checkdebugger2(),const_data1,const_data2[i])
+    else if Case[i] == 3:
+      tmp = solve(checkdebugger3(),const_data1,const_data2[i])
+    else if Case[i] == 4:
+      tmp = solve(checkdebugger4(),const_data1,const_data2[i])
+    else if Case[i] == 5:
+      tmp = solve(checkdebugger5(),const_data1,const_data2[i])
+    else if Case[i] == 6:
+      tmp = solve(checkdebugger6(),const_data1,const_data2[i])
+    else if Case[i] == 7:
+      tmp = solve(checkdebugger7(),const_data1,const_data2[i])
+
+    if cipher[i] != input[shuffledIndex[i]] ^ tmp
+      return 0
+  }
+  return 1
+```
+
+- Ý tưởng giải quyết bài này là mình sẽ lấy giá trị trả về ngược lại hoàn toàn so với chương trình, vì bản thân đang thực hiện debug nên quá trình check debug sẽ luôn cho mình đầu ra trái với mong muốn. Vậy thay vì nhắm đến quá trình check debug của bài toán, mình sẽ focus vào output đầu ra để viết lại chương trình.
+
+- Trước tiên là hàm thao tác checkDebugger của case1, rõ ràng phép so sánh `v24 == 0x70` đã trả về `true` ~ `1`, ta sẽ lấy đầu vào là `0` ngược lại.
+
+  ![alt text](IMG/anti3/image-3.png)
+
+- Trong case2, biến v6 sau quá trình detect ra giá trị là `0` -> `1`.
+
+  ![alt text](IMG/anti3/image-6.png)
+
+- case 3, 4, 5 tương tự case2 lần lượt thu được 1, 0, 0 là input đầu của `solve()`
+
+- Trong case6, chương trình detect debugger bằng cách gọi `BlockInput(true)` hai lần, Hàm `BlockInput()` chỉ thực hiện 1 lần, nếu kết quả trả về của 2 lần gọi đều `true`, chứng minh rằng chương trình đang bị debug. Ta suy ra được `v7` luôn khác `v8` dẫn đến chương trình nhảy vào `v9 = solve(0, a2, a3);`. Vậy input đầu của case6 là `1`.
+
+```C++
+bool IsHooked ()
+{
+    BOOL bFirstResult = FALSE, bSecondResult = FALSE;
+    __try
+    {
+        bFirstResult = BlockInput(TRUE);
+        bSecondResult = BlockInput(TRUE);
+    }
+    __finally
+    {
+        BlockInput(FALSE);
+    }
+    return bFirstResult && bSecondResult;
+}
+```
+
+![alt text](IMG/anti3/image-5.png)
+
+- Trong `case7`, input đầu tiên được truyền vào là `v15` bằng phủ định của `v14` ~ `ZF` tại dòng lệnh này đang bằng `1` -> ta lấy giá trị `0`. `v20` dù được biến đổi lung tung thì sao cùng vẫn được gán lại bằng `v22` ~ `const_data2[v3]` nên không cần xem xét.
+
+  ![alt text](IMG/anti3/image-4.png)
+
+- Thu thập đủ đầu vào, giờ thì `xor` thôi^^.(nói thế chứ ngồi sửa IDA cho nó ép kiểu đẹp cũng oải :v)
+
+```C++
+#include <bits/stdc++.h>
+typedef unsigned __int8 _BYTE;
+typedef unsigned __int16 _WORD;
+typedef unsigned __int32 _DWORD;
+
+using namespace std;
+
+char solve(bool a1, _BYTE *a2, int a3)
+{
+    int v4;           // esi
+    char v6;          // bl
+    int v7;           // ecx
+    _WORD v8;         // dx
+    unsigned int v9;  // edx
+    char v10;         // cl
+    unsigned int v11; // edx
+    _BYTE v12;        // al
+    bool v13;         // zf
+    _BYTE *v14;       // ecx
+    int v15;          // esi
+    char v16;         // dl
+    int v18;          // [esp+14h] [ebp+8h]
+
+    v4 = a3 - 1;
+    v18 = 171;
+    v6 = 0;
+    do
+    {
+        if (v4 <= 5)
+        {
+            if (*(_DWORD *)&a2[4 * v4 + 16])
+                v8 = *(_WORD *)&a2[4 * v4 + 16];
+            else
+                v8 = *(_WORD *)&a2[4 * v4];
+            v7 = (v8 >> 1) | (_WORD)(((_WORD)(32 * v8) ^ (v8 ^ (_WORD)(4 * (v8 ^ (2 * v8)))) & 0xFFE0) << 10);
+            *(_DWORD *)&a2[4 * v4 + 16] = v7;
+        }
+        else
+        {
+            v7 = 0;
+        }
+        v9 = v7 & 0x7FF;
+        v10 = v7 & 7;
+        v11 = v9 >> 3;
+        if (a1)
+            v12 = a2[v11 + 44];
+        else
+            v12 = ~a2[v11 + 44];
+        v13 = v18-- == 1;
+        a2[v11 + 44] = v12 ^ (1 << v10);
+    } while (!v13);
+    v14 = a2 + 46;
+    v15 = 64;
+    do
+    {
+        v16 = *(v14 - 2);
+        v14 += 4;
+        v6 ^= *(v14 - 4) ^ *(v14 - 3) ^ *(v14 - 5) ^ v16;
+        --v15;
+    } while (v15);
+    return v6;
+}
+
+_BYTE const_data1[] =
+    {
+        54, 236, 0, 0, 54, 237, 0, 0, 54, 187,
+        0, 0, 54, 140, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 95, 0, 0, 0, 4, 5, 167, 119,
+        152, 19, 205, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0};
+int const_data2[] =
+    {
+        1, 0, 0, 0, 3, 0, 0, 0, 1, 0,
+        0, 0, 1, 0, 0, 0, 2, 0, 0, 0,
+        1, 0, 0, 0, 3, 0, 0, 0, 1, 0,
+        0, 0, 2, 0, 0, 0, 2, 0, 0, 0,
+        4, 0, 0, 0, 4, 0, 0, 0, 1, 0,
+        0, 0, 3, 0, 0, 0, 4, 0, 0, 0,
+        4, 0, 0, 0, 4, 0, 0, 0, 1, 0,
+        0, 0, 2, 0, 0, 0, 1, 0, 0, 0,
+        4, 0, 0, 0, 1, 0, 0, 0, 4, 0,
+        0, 0, 3, 0, 0, 0, 1, 0, 0, 0,
+        2, 0, 0, 0, 4, 0, 0, 0, 4, 0,
+        0, 0, 2, 0, 0, 0, 2, 0, 0, 0,
+        1, 0, 0, 0, 3, 0, 0, 0, 4, 0,
+        0, 0, 2, 0, 0, 0, 1, 0, 0, 0,
+        2, 0, 0, 0, 2, 0, 0, 0, 3, 0,
+        0, 0};
+
+int shuffledIndex[] =
+    {
+        9, 0, 0, 0, 18, 0, 0, 0, 15, 0,
+        0, 0, 3, 0, 0, 0, 4, 0, 0, 0,
+        23, 0, 0, 0, 6, 0, 0, 0, 7, 0,
+        0, 0, 8, 0, 0, 0, 22, 0, 0, 0,
+        10, 0, 0, 0, 11, 0, 0, 0, 33, 0,
+        0, 0, 13, 0, 0, 0, 14, 0, 0, 0,
+        27, 0, 0, 0, 16, 0, 0, 0, 37, 0,
+        0, 0, 17, 0, 0, 0, 19, 0, 0, 0,
+        20, 0, 0, 0, 21, 0, 0, 0, 5, 0,
+        0, 0, 34, 0, 0, 0, 24, 0, 0, 0,
+        25, 0, 0, 0, 26, 0, 0, 0, 2, 0,
+        0, 0, 12, 0, 0, 0, 29, 0, 0, 0,
+        30, 0, 0, 0, 31, 0, 0, 0, 32, 0,
+        0, 0, 28, 0, 0, 0, 0, 0, 0, 0,
+        35, 0, 0, 0, 36, 0, 0, 0, 1, 0,
+        0, 0};
+
+int pos[] =
+    {
+        6, 0, 0, 0, 1, 0, 0, 0, 7, 0,
+        0, 0, 1, 0, 0, 0, 3, 0, 0, 0,
+        2, 0, 0, 0, 4, 0, 0, 0, 3, 0,
+        0, 0, 6, 0, 0, 0, 3, 0, 0, 0,
+        7, 0, 0, 0, 6, 0, 0, 0, 1, 0,
+        0, 0, 4, 0, 0, 0, 7, 0, 0, 0,
+        4, 0, 0, 0, 1, 0, 0, 0, 5, 0,
+        0, 0, 7, 0, 0, 0, 6, 0, 0, 0,
+        7, 0, 0, 0, 5, 0, 0, 0, 6, 0,
+        0, 0, 4, 0, 0, 0, 5, 0, 0, 0,
+        1, 0, 0, 0, 7, 0, 0, 0, 5, 0,
+        0, 0, 2, 0, 0, 0, 3, 0, 0, 0,
+        1, 0, 0, 0, 2, 0, 0, 0, 3, 0,
+        0, 0, 2, 0, 0, 0, 1, 0, 0, 0,
+        6, 0, 0, 0, 2, 0, 0, 0, 4, 0,
+        0, 0};
+
+int key[] =
+    {
+        0x0E, 0xEB, 0xF3, 0xF6, 0xD1, 0x6B, 0xA7, 0x8F, 0x3D, 0x91,
+        0x85, 0x2B, 0x86, 0xA7, 0x6B, 0xDB, 0x7B, 0x6E, 0x89, 0x89,
+        0x18, 0x95, 0x67, 0xCA, 0x5F, 0xE2, 0x54, 0x0E, 0xD3, 0x3E,
+        0x20, 0x5A, 0x7E, 0xD4, 0xB8, 0x10, 0xC2, 0xB7, 0x00, 0x00};
+
+char flag[40];
+
+int main()
+{
+    for (int i = 0; i < 38; ++i)
+    {
+        if (pos[i * 4] == 1)
+            flag[shuffledIndex[i * 4]] = char(key[i] ^ solve(0, const_data1, const_data2[i * 4]));
+        else if (pos[i * 4] == 2)
+            flag[shuffledIndex[i * 4]] = char(key[i] ^ solve(1, const_data1, const_data2[i * 4]));
+        else if (pos[i * 4] == 3)
+            flag[shuffledIndex[i * 4]] = char(key[i] ^ solve(1, const_data1, const_data2[i * 4]));
+        else if (pos[i * 4] == 4)
+            flag[shuffledIndex[i * 4]] = char(key[i] ^ solve(0, const_data1, const_data2[i * 4]));
+        else if (pos[i * 4] == 5)
+            flag[shuffledIndex[i * 4]] = char(key[i] ^ solve(0, const_data1, const_data2[i * 4]));
+        else if (pos[i * 4] == 6)
+            flag[shuffledIndex[i * 4]] = char(key[i] ^ solve(1, const_data1, const_data2[i * 4]));
+        else if (pos[i * 4] == 7)
+            flag[shuffledIndex[i * 4]] = char(key[i] ^ solve(1, const_data1, const_data2[i * 4]));
+    }
+    cout << flag << endl;
+}
+```
 
 ## Mong WRITEUP này giúp ích cho các bạn!
 
