@@ -134,6 +134,10 @@ print(flag)
   flag: W1{real_warm_up_9b45e23b974e7fd9fdb2e7fd4054e96c}
 ```
 
+### anti3
+
+- cuming soon~~
+
 ## Mong WRITEUP này giúp ích cho các bạn!
 
 ```
