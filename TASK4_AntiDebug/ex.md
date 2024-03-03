@@ -136,7 +136,7 @@ print(flag)
 
 ### anti3
 
-- Với sự hỗ trợ toàn diện từ anh Dũng, mình hoàn thành chall này khi xử lý các thông tin được gợi ý^^
+- Với sự hỗ trợ toàn diện từ anh Dũng, mình hoàn thành chall này khi xử lý các thông tin được gợi ý^^.
 
 - Độ khó của bài này đã được nâng cao, không thể `patch` thiếu trách nhiệm như bài 2 nữa, khi bộ switch/case bắt buộc phải chạy vào để thực hiện biến đổi `cipher`. Điểm khác biệt của các `case` là tham số đầu tiên của hàm `solve(,,)`- biểu thị cho việc detect debugger trong nội dung từng `case`. Hai tham số còn lại của hàm đều là const nên ta chỉ cần nhặt ra để viết `script`.
 
@@ -215,7 +215,7 @@ bool IsHooked ()
 
   ![alt text](IMG/anti3/image-4.png)
 
-- Thu thập đủ đầu vào, giờ thì `xor` thôi^^.(nói thế chứ ngồi sửa IDA cho nó ép kiểu đẹp cũng oải :v)
+- Thu thập đủ đầu vào, giờ thì `xor` thôi^^.(nói thế chứ ngồi sửa `IDA` cho nó ép kiểu đẹp với debug cũng oải :v)
 
 ```C++
 #include <bits/stdc++.h>
@@ -426,6 +426,10 @@ int main()
     }
     cout << flag << endl;
 }
+```
+
+```
+flag: I_10v3-y0U__wh3n Y0u=c411..M3 Senor1t4
 ```
 
 ## Mong WRITEUP này giúp ích cho các bạn!
