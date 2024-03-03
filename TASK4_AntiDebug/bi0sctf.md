@@ -141,7 +141,7 @@ flag: bi0sctf{eBPF_wtF_1s_th4t???}
 
   ![alt text](IMG/bi0s/image-7.png)
 
-- Để bypass, hoặc ta sửa ngay giá trị `eax` tại đây, hoặc ta sửa cờ `zf` trong main để bỏ qua các dòng lệnh ghi đè mảng lưu input2 như đã nhắc ở trên. Đó là những điều mình nắm được ở chall này. Phần còn lại đã được anh Sơn hướng dẫn trong thread của chall^^.
+- Để bypass, hoặc ta sửa ngay giá trị `eax` tại đây, hoặc ta sửa cờ `zf` trong main để bỏ qua các dòng lệnh ghi đè mảng lưu input2 như đã nhắc ở trên. Đó là những điều mình nắm được ở chall này. Phần còn lại mình sẽ cập nhật sớm khi tự hoàn thiện bài!
 
 ## Mong WRITEUP này giúp ích cho các bạn!
 
