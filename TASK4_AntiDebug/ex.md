@@ -150,7 +150,7 @@ print(flag)
 
 #### resolve_API
 
-- Ở chall này, ta thường xuyên gặp phải hai hàm `resolve_API()` dùng để gọi các API ra mà không gọi trực tiếp. Thực chất, các hàm được gọi ra theo phương thức này không thể call trực tiếp được, tiêu biểu như `ntdll_NtQueryInformationProcess`, nó không phải một standard winAPI nên không được quy định trong public dll librảry. Nó thuộc Native API nên không thể trực tiếp sử dụng.
+- Ở chall này, ta thường xuyên gặp phải hai hàm `resolve_API()` dùng để gọi các API ra mà không gọi trực tiếp. Thực chất, các hàm được gọi ra trong chương trình theo phương thức này đều là các hàm không thể call trực tiếp được, tiêu biểu như `ntdll_NtQueryInformationProcess`, nó không phải một standard winAPI nên không được quy định trong public dll librảry. Nó thuộc Native API nên không thể trực tiếp sử dụng.
 
   ![alt text](image.png)
 
