@@ -443,8 +443,10 @@ int main()
 ```
 
 ```
-flag: I_10v3-y0U__wh3n Y0u=c411..M3 Senor1t4
+key: I_10v3-y0U__wh3n Y0u=c411..M3 Senor1t4
 ```
+
+- Từ key này mình có thể sinh ra flag thông qua các hàm sau đó().
 
 ## Mong WRITEUP này giúp ích cho các bạn!
 
