@@ -446,7 +446,21 @@ int main()
 key: I_10v3-y0U__wh3n Y0u=c411..M3 Senor1t4
 ```
 
-- Từ key này mình có thể sinh ra flag thông qua các hàm sau đó().
+- Từ `key` này mình có thể sinh ra flag thông qua các hàm sau đó một lưu ý rằng chương trình sẽ gọi tls_call_back liên tục thông qua hàm dưới đây, `a3()` thực chất là địa chỉ của tls_call_back().
+
+  ![alt text](IMG/anti3/image-9.png)
+
+- Tránh cho thao tác loằng ngoằng, mình sẽ sửa luôn luồng của tls_call_back cho nó force jump vào luồng chuẩn và để cẩn thận thì xor eax luôn^^.
+
+  ![alt text](IMG/anti3/image-8.png)
+
+- Giờ thì gặt flag thôi :v.
+
+  ![alt text](IMG/anti3/image-7.png)
+
+```
+flag: Th3_U1tiM4t3_ant1_D3Bu9_ref3r3ncE
+```
 
 ## Mong WRITEUP này giúp ích cho các bạn!
 
