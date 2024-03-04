@@ -446,7 +446,11 @@ int main()
 key: I_10v3-y0U__wh3n Y0u=c411..M3 Senor1t4
 ```
 
-- Từ `key` này mình có thể sinh ra flag thông qua các hàm sau đó một lưu ý rằng chương trình sẽ gọi tls_call_back liên tục thông qua hàm dưới đây, `a3()` thực chất là địa chỉ của tls_call_back().
+- Từ `key` này mình có thể sinh ra flag thông qua các hàm sau đó.
+
+  ![alt text](IMG/anti3/image-10.png)
+
+- Một lưu ý rằng chương trình sẽ gọi tls_call_back liên tục thông qua hàm dưới đây, `a3()` thực chất là địa chỉ của tls_call_back().
 
   ![alt text](IMG/anti3/image-9.png)
 
