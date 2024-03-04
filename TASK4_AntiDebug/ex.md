@@ -207,7 +207,7 @@ bool IsHooked ()
 
 ![alt text](IMG/anti3/image-5.png)
 
-- Trong `case7`, input đầu tiên được truyền vào là `v15` bằng phủ định của `v14` ~ `ZF` tại dòng lệnh này đang bằng `1` -> ta lấy giá trị `0`. `v20` dù được biến đổi lung tung thì sao cùng vẫn được gán lại bằng `v22` ~ `const_data2[v3]` nên không cần xem xét.
+- Trong `case7`, input đầu tiên được truyền vào là `v15` bằng phủ định của `v14` ~ `ZF` tại dòng lệnh này đang bằng `1` -> ta lấy giá trị `0`. `v20` dù được biến đổi lung tung thì sau cùng vẫn được gán lại bằng `v22` ~ `const_data2[v3]` nên không cần xem xét.
 
   ![alt text](IMG/anti3/image-4.png)
 
