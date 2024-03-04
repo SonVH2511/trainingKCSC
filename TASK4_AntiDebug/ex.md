@@ -444,6 +444,10 @@ key: I_10v3-y0U__wh3n Y0u=c411..M3 Senor1t4
 
   ![alt text](IMG/anti3/image-7.png)
 
+```
+flag: Th3_U1tiM4t3_ant1_D3Bu9_ref3r3ncE
+```
+
 #### resolve_API
 
 - Ở chall này, ta thường xuyên gặp phải hai hàm `resolve_API()` dùng để gọi các API ra mà không gọi trực tiếp. Thực chất, các hàm được gọi ra trong chương trình theo phương thức này đều là các hàm không thể call trực tiếp được, tiêu biểu như `ntdll_NtQueryInformationProcess`, nó không phải một standard winAPI nên không được quy định trong public dll librảry. Nó thuộc Native API nên không thể trực tiếp sử dụng.
@@ -461,10 +465,6 @@ key: I_10v3-y0U__wh3n Y0u=c411..M3 Senor1t4
 - Khi check debug thành công, chương trình sẽ thêm một lệnh vào chương trình, thực hiện thay đổi giá trị của mảng `data` thứ được dùng để tạo ra `const_data1` -> ảnh hưởng tới `solve()`. Giải quyết vấn đề bằng cách `patch` để bypass đoạn kiểm tra.
 
   ![alt text](IMG/anti3/image-2.png)
-
-```
-flag: Th3_U1tiM4t3_ant1_D3Bu9_ref3r3ncE
-```
 
 ## Mong WRITEUP này giúp ích cho các bạn!
 
