@@ -399,28 +399,28 @@ int key[] =
         0x18, 0x95, 0x67, 0xCA, 0x5F, 0xE2, 0x54, 0x0E, 0xD3, 0x3E,
         0x20, 0x5A, 0x7E, 0xD4, 0xB8, 0x10, 0xC2, 0xB7, 0x00, 0x00};
 
-char flag[40];
+char outputKey[40];
 
 int main()
 {
     for (int i = 0; i < 38; ++i)
     {
         if (pos[i * 4] == 1)
-            flag[shuffledIndex[i * 4]] = char(key[i] ^ solve(0, const_data1, const_data2[i * 4]));
+            outputKey[shuffledIndex[i * 4]] = char(key[i] ^ solve(0, const_data1, const_data2[i * 4]));
         else if (pos[i * 4] == 2)
-            flag[shuffledIndex[i * 4]] = char(key[i] ^ solve(1, const_data1, const_data2[i * 4]));
+            outputKey[shuffledIndex[i * 4]] = char(key[i] ^ solve(1, const_data1, const_data2[i * 4]));
         else if (pos[i * 4] == 3)
-            flag[shuffledIndex[i * 4]] = char(key[i] ^ solve(1, const_data1, const_data2[i * 4]));
+            outputKey[shuffledIndex[i * 4]] = char(key[i] ^ solve(1, const_data1, const_data2[i * 4]));
         else if (pos[i * 4] == 4)
-            flag[shuffledIndex[i * 4]] = char(key[i] ^ solve(0, const_data1, const_data2[i * 4]));
+            outputKey[shuffledIndex[i * 4]] = char(key[i] ^ solve(0, const_data1, const_data2[i * 4]));
         else if (pos[i * 4] == 5)
-            flag[shuffledIndex[i * 4]] = char(key[i] ^ solve(0, const_data1, const_data2[i * 4]));
+            outputKey[shuffledIndex[i * 4]] = char(key[i] ^ solve(0, const_data1, const_data2[i * 4]));
         else if (pos[i * 4] == 6)
-            flag[shuffledIndex[i * 4]] = char(key[i] ^ solve(1, const_data1, const_data2[i * 4]));
+            outputKey[shuffledIndex[i * 4]] = char(key[i] ^ solve(1, const_data1, const_data2[i * 4]));
         else if (pos[i * 4] == 7)
-            flag[shuffledIndex[i * 4]] = char(key[i] ^ solve(1, const_data1, const_data2[i * 4]));
+            outputKey[shuffledIndex[i * 4]] = char(key[i] ^ solve(1, const_data1, const_data2[i * 4]));
     }
-    cout << flag << endl;
+    cout << outputKey << endl;
 }
 ```
 
