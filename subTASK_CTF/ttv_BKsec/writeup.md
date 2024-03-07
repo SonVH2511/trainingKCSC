@@ -340,7 +340,7 @@ ret
 
 - Một lưu ý rằng các cơ chế hoạt động LIFO của stack. Nếu thứ tự các biến đề bài cho là chuẩn thì việc truy cập của `ebp` là thứ cần lưu ý. Giá trị đầu tiên trong 3 giá trị được push vào sẽ được xếp dưới cùng, ảnh hưởng tới việc truy cập của `ebp`.
 
-- Với mảng 3 giá trị ta có là `[0xabcd1456, 0xdfed7768, 0x68686868]`, nếu muốn `ebp` truy cập đúng theo thứ tự này như đoạn chương trình trên, ta sẽ phải push theo thứ tự ngược lại, khi đó thứ tự truy cập của `ebp` cugnx không bị ảnh hưởng.
+- Với mảng 3 giá trị ta có là `[0xabcd1456, 0xdfed7768, 0x68686868]`, nếu muốn `ebp` truy cập đúng theo thứ tự này như đoạn chương trình trên, ta sẽ phải push theo thứ tự ngược lại, khi đó thứ tự truy cập của `ebp` cũng không bị ảnh hưởng.
 
 ![alt text](IMG/image-16.png)
 
