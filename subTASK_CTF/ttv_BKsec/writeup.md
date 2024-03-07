@@ -112,7 +112,7 @@ function checkPassword() {
 }
 ```
 
-- Ta cần giải hệ phương trình 11 ẩn với giới hạn các biến nằm trong khoảng 0-999.
+- Ta cần giải hệ phương trình 12 ẩn với giới hạn các biến nằm trong khoảng 0-999.
 
 ![alt text](IMG/image-3.png)
 
