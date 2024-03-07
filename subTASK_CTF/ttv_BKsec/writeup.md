@@ -315,7 +315,7 @@ print(ans)
   flag: BKSEC{w3lC0mE_tO_R3v}
 ```
 
-- Flag trông khá giống fake flag nhưng submit thì đúng :)).
+- Mặc dù đúng nhưng trông khá giống fakeflag :v.
 
 ### BabyASM
 
@@ -374,7 +374,7 @@ babyasm:
 ret
 ```
 
-- Chạy chương trình trên ở gdb, ta thu được output nằm trong `eax` là 0xb77b khi kết thúc hàm.
+- Chạy chương trình trên ở `gdb`, ta thu được output nằm trong `eax` là 0xb77b khi kết thúc hàm.
 
 ![alt text](IMG/image-17.png)
 
