@@ -260,7 +260,7 @@ print(flag)
 
 ### BabyRust
 
-- Để giải chall này, mình cần một phương án tiếp cận khác thay vì theo dõi luồng chương trình để nhặt thông tin như bình thường. Bởi chương trình `rust` khá khó đọc làm ảnh hưởng tới quá trình. Tuy nhiên, với thông báo như dưới ta có thể từ string `Wrong! Please try again~` mà dò ra hàm kiểm tra.
+- Để giải chall này, mình cần một phương án tiếp cận khác thay vì theo dõi luồng chương trình để nhặt thông tin như bình thường. Bởi chương trình `rust` khá khó đọc làm ảnh hưởng tới quá trình theo dõi. Tuy nhiên, với thông báo như dưới ta có thể từ string `Wrong! Please try again~` mà dò ra hàm kiểm tra.
 
 ![alt text](IMG/image-12.png)
 
