@@ -2,7 +2,7 @@
 
 ### anti1
 
-- Về bài đầu tiên, Chương trình thực hiện antidebug bằng cách `throw exception` khi detect ra chương trình đang được debug và hướng ta tới luồng chương trình sai. Tuy nhiên có vẻ `IDA` quá mạnh cho phép debugger thoát khỏi `exception` và quay trở lại luồng chính khiến việc debug không gặp trở ngại nào.
+- Về bài đầu tiên, Chương trình thực hiện antidebug bằng cách `throw exception` và detect ra chương trình đang được debug và hướng ta tới luồng chương trình sai. Ta chỉ cần cắm bp tại luồng xử lý exception rồi f9 là tự động nhảy tới.
 
 ![alt text](IMG/anti1/image.png)
 
@@ -19,6 +19,105 @@
 ![alt text](IMG/anti1/image-2.png)
 
 - Sau đó, chương trình nhảy tới hàm kiểm tra dưới đây, và cũng là điểm duy nhất ta cần `patch` để bypass(hoặc cũng không cần vì tới đây hoàn toàn có thể debug tĩnh). Một bên là luồng xử lí rất dài mà mình không nắm rõ khi đoạn này không xuất được mã giả. Luồng còn lại ta thấy một dải data được load vào.
+
+- Chương trình này thực hiện antidebug bằng cách check value trong `fs:30h + 2`. Nếu ai chưa biết thì `fs:[0x30]` là một con trỏ đến PEB của tiến trình hiện tại với cấu trúc như dưới.
+  
+```C
+typedef struct _PEB {
+    BYTE InheritedAddressSpace;
+    BYTE ReadImageFileExecOptions;
+    BYTE BeingDebugged;
+    BYTE Spare;
+    PVOID Mutant;
+
+    PVOID ImageBaseAddress;
+    PPEB_LDR_DATA Ldr;
+    PRTL_USER_PROCESS_PARAMETERS ProcessParameters;
+
+    PVOID SubSystemData;
+    PVOID ProcessHeap;
+    PVOID FastPebLock;
+    PVOID AtlThunkSListPtr;
+    PVOID IFEOKey;
+
+    ULONG CrossProcessFlags;
+    PVOID KernelCallbackTable;
+    ULONG SystemReserved[1];
+    ULONG AtlThunkSListPtr32;
+    PVOID ApiSetMap;
+
+    ULONG TlsExpansionCounter;
+    PVOID TlsBitmap;
+    ULONG TlsBitmapBits[2];
+
+    PVOID ReadOnlySharedMemoryBase;
+    PVOID HotpatchInformation;
+    PVOID *ReadOnlyStaticServerData;
+    PVOID AnsiCodePageData;
+    PVOID OemCodePageData;
+    PVOID UnicodeCaseTableData;
+
+    ULONG NumberOfProcessors;
+    ULONG NtGlobalFlag;
+    LARGE_INTEGER CriticalSectionTimeout;
+    SIZE_T HeapSegmentReserve;
+    SIZE_T HeapSegmentCommit;
+    SIZE_T HeapDeCommitTotalFreeThreshold;
+    SIZE_T HeapDeCommitFreeBlockThreshold;
+
+    ULONG NumberOfHeaps;
+    ULONG MaximumNumberOfHeaps;
+    PVOID *ProcessHeaps;
+
+    PVOID GdiSharedHandleTable;
+    PVOID ProcessStarterHelper;
+    ULONG GdiDCAttributeList;
+    PVOID LoaderLock;
+
+    ULONG OSMajorVersion;
+    ULONG OSMinorVersion;
+    USHORT OSBuildNumber;
+    USHORT OSCSDVersion;
+    ULONG OSPlatformId;
+    ULONG ImageSubsystem;
+    ULONG ImageSubsystemMajorVersion;
+    ULONG ImageSubsystemMinorVersion;
+    ULONG ActiveProcessAffinityMask;
+
+    ULONG GdiHandleBuffer[34];
+    PVOID PostProcessInitRoutine;
+
+    PVOID TlsExpansionBitmap;
+    ULONG TlsExpansionBitmapBits[32];
+
+    ULONG SessionId;
+
+    ULARGE_INTEGER AppCompatFlags;
+    ULARGE_INTEGER AppCompatFlagsUser;
+    PVOID pShimData;
+    PVOID AppCompatInfo;
+
+    UNICODE_STRING CSDVersion;
+    PVOID ActivationContextData;
+    PVOID ProcessAssemblyStorageMap;
+    PVOID SystemDefaultActivationContextData;
+    PVOID SystemAssemblyStorageMap;
+
+    SIZE_T MinimumStackCommit;
+
+    PVOID SparePointers[4];
+    ULONG SpareUlongs[5];
+    PVOID WerRegistrationData;
+    PVOID WerShipAssertPtr;
+    PVOID pContextData;
+    PVOID pImageHeaderHash;
+    ULONG TracingFlags;
+
+    ULONG64 CsrServerReadOnlySharedMemoryBase;
+} PEB, *PPEB;
+```
+
+- `fs:[0x30] + 2`, tương ứng với giá trị `PEB->BeingDebugged`. ta đơn giản là bypass bằng 1 số cách như sửa cờ, setIP...
 
 ![alt text](IMG/anti1/image-3.png)
 
